@@ -18,6 +18,7 @@ namespace MSM6295Loader.Codecs
 												337,371,408,449,494,544,598,658,
 												724,796,876,963,1060,1166,1282,1411,1552
 											};
+
 		private static sbyte[] delta_table = new sbyte[16] {1,3,5,7,9,11,13,15, -1,-3,-5,-7,-9,-11,-13,-15};
 		private static short[] s_diff_lookup = new short[49 * 16];
 
@@ -75,7 +76,7 @@ namespace MSM6295Loader.Codecs
 				{
 					byte step_l = EncodeSample(input[i++]);
 					byte step = (byte)(((step_h & 0xF) << 4) + (step_l & 0xF));
-					writer.Write(step);
+					writer.Write((byte)step);
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 ﻿using MSM6295Loader.Codecs;
 using MSM6295Loader.Containers;
+using MSM6295Loader.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -260,6 +261,7 @@ namespace MSM6295Loader
             if (dr == DialogResult.OK)
             {
                 Project project = DeserializeToObject<Project>(od.FileName);
+                project.CurrentPath = Path.GetDirectoryName(od.FileName);
                 LoadProject(project);
             }
         }
@@ -350,14 +352,19 @@ namespace MSM6295Loader
         {
             if (_project != null)
             {
-                //save current project into ADPCM binary image for MSM6295
-                SaveFileDialog sd = new SaveFileDialog();
-                sd.InitialDirectory = _project.CurrentPath;
-                sd.FileName = _project.ProjectName;
-                sd.Filter = sd.Filter = "Binary Files(*.bin)| *.bin";
-                DialogResult dr = sd.ShowDialog();
+                ExportDialog xd = new ExportDialog();
+                if (!String.IsNullOrEmpty(_project.LastExport) && Directory.Exists(_project.LastExport))
+                {
+                    xd.FilePathName = _project.LastExport;
+                }
+                else
+                {
+                    xd.FilePathName = Path.Combine(_project.CurrentPath, _project.ProjectName + ".bin");
+                }
+                DialogResult dr = xd.ShowDialog();
                 if (dr == DialogResult.OK)
                 {
+                    //save current project into ADPCM binary image for MSM6295
                     using (MemoryStream ms = new MemoryStream())
                     using (BinaryWriter writer = new BinaryWriter(ms))
                     {
@@ -367,7 +374,19 @@ namespace MSM6295Loader
                         {
                             MessageBox.Show("Binary File is larger than the maximum design size of the OKI MSM6295, some commands will not be played properly. The full binary has been written but you will need to truncate to a max of 0x40000 bytes (256K bytes)", "Compilation Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
-                        using (FileStream fs = new FileStream(sd.FileName, FileMode.OpenOrCreate))
+                        else
+                        {
+                            if (xd.PadToFullSize)
+                            {
+                                long padBytes = 0x40000 - ms.Position;
+                                while( padBytes > 0)
+                                {
+                                    writer.Write((byte)0);
+                                    padBytes--;
+                                }
+                            }
+                        }
+                        using (FileStream fs = new FileStream(xd.FilePathName, FileMode.OpenOrCreate))
                         {
                             ms.Position = 0;
                             ms.CopyTo(fs);
@@ -375,6 +394,8 @@ namespace MSM6295Loader
                         }
                         MessageBox.Show("Project exported sucessfully!", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
+
+                    _project.LastExport = xd.FilePathName;
                 }
             }
         }

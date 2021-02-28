@@ -51,14 +51,14 @@
             this.olvColumnStatus = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnSize = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnDescription = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.contextMenuStripProjectFile = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.saveSampleAswavToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.objectListViewMain)).BeginInit();
-            this.statusStrip1.SuspendLayout();
             this.contextMenuStripProjectFile.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -238,7 +238,7 @@
             this.objectListViewMain.Location = new System.Drawing.Point(0, 25);
             this.objectListViewMain.Name = "objectListViewMain";
             this.objectListViewMain.ShowGroups = false;
-            this.objectListViewMain.Size = new System.Drawing.Size(800, 425);
+            this.objectListViewMain.Size = new System.Drawing.Size(800, 403);
             this.objectListViewMain.TabIndex = 1;
             this.objectListViewMain.UseCompatibleStateImageBehavior = false;
             this.objectListViewMain.UseTranslucentSelection = true;
@@ -272,6 +272,20 @@
             this.olvColumnDescription.Text = "Descripton";
             this.olvColumnDescription.Width = 547;
             // 
+            // contextMenuStripProjectFile
+            // 
+            this.contextMenuStripProjectFile.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveSampleAswavToolStripMenuItem});
+            this.contextMenuStripProjectFile.Name = "contextMenuStripProjectFile";
+            this.contextMenuStripProjectFile.Size = new System.Drawing.Size(182, 26);
+            // 
+            // saveSampleAswavToolStripMenuItem
+            // 
+            this.saveSampleAswavToolStripMenuItem.Name = "saveSampleAswavToolStripMenuItem";
+            this.saveSampleAswavToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.saveSampleAswavToolStripMenuItem.Text = "Save Sample as .wav";
+            this.saveSampleAswavToolStripMenuItem.Click += new System.EventHandler(this.saveSampleAswavToolStripMenuItem_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -289,27 +303,13 @@
             this.toolStripStatusLabel.Spring = true;
             this.toolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // contextMenuStripProjectFile
-            // 
-            this.contextMenuStripProjectFile.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveSampleAswavToolStripMenuItem});
-            this.contextMenuStripProjectFile.Name = "contextMenuStripProjectFile";
-            this.contextMenuStripProjectFile.Size = new System.Drawing.Size(182, 26);
-            // 
-            // saveSampleAswavToolStripMenuItem
-            // 
-            this.saveSampleAswavToolStripMenuItem.Name = "saveSampleAswavToolStripMenuItem";
-            this.saveSampleAswavToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.saveSampleAswavToolStripMenuItem.Text = "Save Sample as .wav";
-            this.saveSampleAswavToolStripMenuItem.Click += new System.EventHandler(this.saveSampleAswavToolStripMenuItem_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.objectListViewMain);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
@@ -318,9 +318,9 @@
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.objectListViewMain)).EndInit();
+            this.contextMenuStripProjectFile.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.contextMenuStripProjectFile.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

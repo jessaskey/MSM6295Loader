@@ -30,6 +30,7 @@ namespace MSM6295Loader.Containers
         public bool IsDirty { get { return _isDirty; } set { _isDirty = value; OnProjectChanged(EventArgs.Empty); } }
         public string ProjectName { get; set; }
         public string CurrentPath { get; set; }
+        public string LastExport { get; set; }
 
         [XmlIgnore]
         public int TotalADPCMBytes 
@@ -101,7 +102,7 @@ namespace MSM6295Loader.Containers
             writer.Write((long)0);     //8 bytes of all zeros
 
             //do the lengths first
-            foreach (ProjectFile projectFile in ProjectFiles)
+            foreach (ProjectFile projectFile in ProjectFiles.OrderBy(f => f.Index))
             { 
                 writer.Write(OkiEncoder.EncodeAddress(currentDataAddress));
                 currentDataAddress += projectFile.OkiADPCM.Length;
