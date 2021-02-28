@@ -110,7 +110,7 @@ namespace MSM6295Loader.Containers
                 writer.Write((Int16)0);     //two empty bytes
             }
             //now dump binary
-            foreach (ProjectFile projectFile in ProjectFiles)
+            foreach (ProjectFile projectFile in ProjectFiles.OrderBy(f => f.Index))
             {
                 writer.Write(projectFile.OkiADPCM);
             }
