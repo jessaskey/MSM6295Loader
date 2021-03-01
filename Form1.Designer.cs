@@ -55,6 +55,7 @@
             this.saveSampleAswavToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.saveSampleAsbinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.objectListViewMain)).BeginInit();
             this.contextMenuStripProjectFile.SuspendLayout();
@@ -275,9 +276,10 @@
             // contextMenuStripProjectFile
             // 
             this.contextMenuStripProjectFile.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveSampleAswavToolStripMenuItem});
+            this.saveSampleAswavToolStripMenuItem,
+            this.saveSampleAsbinToolStripMenuItem});
             this.contextMenuStripProjectFile.Name = "contextMenuStripProjectFile";
-            this.contextMenuStripProjectFile.Size = new System.Drawing.Size(182, 26);
+            this.contextMenuStripProjectFile.Size = new System.Drawing.Size(182, 70);
             // 
             // saveSampleAswavToolStripMenuItem
             // 
@@ -302,6 +304,13 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(785, 17);
             this.toolStripStatusLabel.Spring = true;
             this.toolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // saveSampleAsbinToolStripMenuItem
+            // 
+            this.saveSampleAsbinToolStripMenuItem.Name = "saveSampleAsbinToolStripMenuItem";
+            this.saveSampleAsbinToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.saveSampleAsbinToolStripMenuItem.Text = "Save Sample as .bin";
+            this.saveSampleAsbinToolStripMenuItem.Click += new System.EventHandler(this.saveSampleAsbinToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -353,6 +362,7 @@
         private BrightIdeasSoftware.OLVColumn olvColumnSize;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripProjectFile;
         private System.Windows.Forms.ToolStripMenuItem saveSampleAswavToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveSampleAsbinToolStripMenuItem;
     }
 }
 

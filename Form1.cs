@@ -479,8 +479,11 @@ namespace MSM6295Loader
                     using (BinaryWriter writer = new BinaryWriter(ms))
                     {
                         MameOKI.Encode(info.Samples, writer);
+                        writer.Flush();
+                        ms.Position = 0;
                         pf.OkiADPCM = ms.ToArray();
                     }
+                    pf.Index = _project.ProjectFiles.Count;
                     _project.ProjectFiles.Add(pf);
                 }
             }
@@ -497,19 +500,17 @@ namespace MSM6295Loader
                         ProjectFile projectFile = objectListViewMain.SelectedObject as ProjectFile;
                         if(projectFile != null)
                         {
-                            if (projectFile.Index > 1)
+                            int currentIndex = _project.ProjectFiles.IndexOf(projectFile);
+                            if (currentIndex > 0)
                             {
-                                int targetIndex = projectFile.Index - 1;
-                                ProjectFile priorProjectFile = _project.ProjectFiles.Where(p => p.Index == targetIndex).FirstOrDefault();
-                                if (priorProjectFile != null)
-                                {
-                                    priorProjectFile.Index += 1;
-                                }
-                                projectFile.Index = targetIndex;
+                                int targetIndex = currentIndex - 1;
+                                _project.ProjectFiles.RemoveAt(currentIndex);
+                                _project.ProjectFiles.Insert(targetIndex, projectFile);
+                                _project.ReIndexProjectFiles();
+                                objectListViewMain.SetObjects(_project.ProjectFiles.OrderBy(f => f.Index));
+                                objectListViewMain.SelectObject(projectFile);
                             }
                         }
-                        _project.ReIndexProjectFiles();
-                        objectListViewMain.SetObjects(_project.ProjectFiles.OrderBy(f => f.Index));
                         objectListViewMain.ResumeLayout();
                     }
                     else
@@ -536,19 +537,17 @@ namespace MSM6295Loader
                         ProjectFile projectFile = objectListViewMain.SelectedObject as ProjectFile;
                         if (projectFile != null)
                         {
-                            if (projectFile.Index < _project.ProjectFiles.Count - 1)
+                            int currentIndex = _project.ProjectFiles.IndexOf(projectFile);
+                            if (currentIndex < _project.ProjectFiles.Count -1)
                             {
-                                int targetIndex = projectFile.Index + 1;
-                                ProjectFile nextProjectFile = _project.ProjectFiles.Where(p => p.Index == targetIndex).FirstOrDefault();
-                                if (nextProjectFile != null)
-                                {
-                                    nextProjectFile.Index -= 1;
-                                }
-                                projectFile.Index = targetIndex;
+                                int targetIndex = projectFile.Index;
+                                _project.ProjectFiles.RemoveAt(currentIndex);
+                                _project.ProjectFiles.Insert(targetIndex, projectFile);
+                                _project.ReIndexProjectFiles();
+                                objectListViewMain.SetObjects(_project.ProjectFiles.OrderBy(f => f.Index));
+                                objectListViewMain.SelectObject(projectFile);
                             }
                         }
-                        _project.ReIndexProjectFiles();
-                        objectListViewMain.SetObjects(_project.ProjectFiles.OrderBy(f => f.Index));
                         objectListViewMain.ResumeLayout();
                     }
                     else
@@ -592,5 +591,34 @@ namespace MSM6295Loader
             }
         }
 
+        private void saveSampleAsbinToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProjectFile projectFile = objectListViewMain.SelectedObject as ProjectFile;
+            if (projectFile != null)
+            {
+                if (projectFile.OkiADPCM.Length > 0)
+                {
+                    SaveFileDialog sd = new SaveFileDialog();
+                    sd.InitialDirectory = _project.CurrentPath;
+                    sd.Filter = "Binary Files(*.bin)| *.bin";
+                    DialogResult dr = sd.ShowDialog();
+                    if (dr == DialogResult.OK)
+                    {
+                        using (FileStream fs = new FileStream(sd.FileName, FileMode.OpenOrCreate))
+                        {
+                            foreach(byte b in projectFile.OkiADPCM)
+                            {
+                                fs.WriteByte(b);
+                            }
+                            fs.Flush();
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("File has zero bytes.", "File Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                }
+            }
+        }
     }
 }

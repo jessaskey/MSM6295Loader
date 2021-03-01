@@ -28,7 +28,7 @@ namespace MSM6295Loader.Codecs
 			info.SubChunk2Size = BitConverter.ToInt32(fileBytes, 40);
 
 			info.Samples = new short[(int)Math.Ceiling((double)((fileBytes.Length - 44) / 2))];
-			Buffer.BlockCopy(fileBytes.Skip(44).ToArray(), 0, info.Samples, 0, info.Samples.Length);
+			Buffer.BlockCopy(fileBytes, 44, info.Samples, 0, fileBytes.Length - 44);
 
 			List<string> validationErrors = new List<string>();
 

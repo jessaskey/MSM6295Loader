@@ -88,7 +88,7 @@ namespace MSM6295Loader.Containers
         public void ReIndexProjectFiles()
         {
             int currentIndex = 1;
-            foreach(ProjectFile projectFile in this.ProjectFiles.OrderBy(f => f.Index))
+            foreach(ProjectFile projectFile in this.ProjectFiles)
             {
                 projectFile.Index = currentIndex++;
                 //if (!projectFile.Id.HasValue) projectFile.Id = Guid.NewGuid();

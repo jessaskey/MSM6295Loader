@@ -67,9 +67,10 @@ namespace MSM6295Loader.Codecs
 			int i = 0;
 			_lastSample = 0;
 			_lastStep = 0;
-
+			int x = 0;
 			while(i < input.Length)
             {
+
 				byte step_h = EncodeSample(input[i++]);
 				//in case we have odd # of samples samples
 				if (i < input.Length)
@@ -77,18 +78,22 @@ namespace MSM6295Loader.Codecs
 					byte step_l = EncodeSample(input[i++]);
 					byte step = (byte)(((step_h & 0xF) << 4) + (step_l & 0xF));
 					writer.Write((byte)step);
+					if (x++ == (0x0aeb))
+					{
+						x = x;
+					}
 				}
 			}
 		}
 
 		private static byte EncodeSample(short sample)
         {
-			//if (sample < 0x7ff8)
-			//{
-			//	// round up
-			//	sample += 8;
-			//}
-			sample = (short)(sample >>4);
+            if (sample < 0x7ff8)
+            {
+                // round up
+                sample += 8;
+            }
+            sample = (short)(sample >>4);
 
 			short step_size = oki_step_table[_lastStep];
 			short delta = (short)(sample - _lastSample);
@@ -98,7 +103,7 @@ namespace MSM6295Loader.Codecs
 				adpcm_sample = 8;
 			}
 			delta = Math.Abs(delta);
-			for (int bit = 3; bit > 0;  bit--)
+			for (int bit = 2; bit >= 0;  bit--)
 			{
 				if (delta >= step_size)
 				{
